@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Promotion - School Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        .promotion-card {
+            animation: fadeIn 0.5s ease-in-out;
+            transition: transform 0.2s ease-in-out;
+        }
+        .promotion-card:hover {
+            transform: translateY(-5px);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+            .promotion-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1024px) {
+            .promotion-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="promote-individual.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Individually</a>
+                        <a href="promote-class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote by Class</a>
+                        <a href="graduate-student.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Graduate Student</a>
+                        <a href="check-graduate.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Check Graduate</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Academic Promotion</h1>
+        </div>
+
+        <!-- Promotion Cards -->
+        <div class="promotion-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Promote Individually -->
+            <div class="promotion-card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mb-4">
+                    <i class="fas fa-user-graduate text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Promote Individually</h3>
+                <p class="text-gray-600 mb-4">Promote a single student to the next class.</p>
+                <a href="promoteindividual.html" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-arrow-right mr-2"></i> Go
+                </a>
+            </div>
+            <!-- Promote by Class -->
+            <div class="promotion-card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                <div class="w-12 h-12 rounded-full bg-green-100 text-green-500 flex items-center justify-center mb-4">
+                    <i class="fas fa-users text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Promote by Class</h3>
+                <p class="text-gray-600 mb-4">Promote an entire class to the next level.</p>
+                <a href="promotebyclass.html" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-arrow-right mr-2"></i> Go
+                </a>
+            </div>
+            <!-- Graduate Student -->
+            <div class="promotion-card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center mb-4">
+                    <i class="fas fa-graduation-cap text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Graduate Student</h3>
+                <p class="text-gray-600 mb-4">Mark a student as graduated from the school.</p>
+                <a href="graduate-student.html" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-arrow-right mr-2"></i> Go
+                </a>
+            </div>
+            <!-- Check Graduate -->
+            <div class="promotion-card bg-white p-6 rounded-lg shadow-lg flex flex-col items-center text-center">
+                <div class="w-12 h-12 rounded-full bg-red-100 text-red-500 flex items-center justify-center mb-4">
+                    <i class="fas fa-check-circle text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Check Graduate</h3>
+                <p class="text-gray-600 mb-4">View or verify graduated students.</p>
+                <a href="check-graduate.html" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 flex items-center">
+                    <i class="fas fa-arrow-right mr-2"></i> Go
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle (only on arrow click)
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
+                const isHidden = dropdown.classList.contains('hidden');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html>
