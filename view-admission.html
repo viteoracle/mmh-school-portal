@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Admissions - School Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        .form-card, .table-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .form-card, .table-card {
+                padding: 1rem;
+            }
+            input, select, button {
+                font-size: 0.9rem;
+            }
+            .admission-table th, .admission-table td {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 dropdown">
+                        <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="view-admissions.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">View Admissions</h1>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Filter Students</h2>
+            <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <!-- Class -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class">Class</label>
+                    <select
+                        id="class"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    >
+                        <option value="" selected>All Classes</option>
+                        <option value="Nur 1">Nur 1</option>
+                        <option value="Nur 2">Nur 2</option>
+                        <option value="Nur 3">Nur 3</option>
+                        <option value="Basic 1">Basic 1</option>
+                        <option value="Basic 2">Basic 2</option>
+                        <option value="Basic 3">Basic 3</option>
+                        <option value="Basic 4">Basic 4</option>
+                        <option value="Basic 5">Basic 5</option>
+                        <option value="Basic 6">Basic 6</option>
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                </div>
+                <!-- Class Arm -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class-arm">Class Arm</label>
+                    <select
+                        id="class-arm"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                    >
+                        <option value="" selected>All Arms</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+                <!-- Search -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="search">Search</label>
+                    <input
+                        type="text"
+                        id="search"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="Search by Name or ID"
+                    >
+                </div>
+                <!-- Export Button -->
+                <div class="md:col-span-3">
+                    <button
+                        id="export-csv"
+                        class="w-full bg-green-500 text-white p-2 rounded hover:bg-green-600 transition duration-300 flex items-center justify-center text-sm"
+                    >
+                        <i class="fas fa-download mr-2"></i> Export to CSV
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Students Table -->
+        <div class="table-card bg-white p-6 rounded-lg shadow-lg max-w-full mx-auto">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Admitted Students</h2>
+            <div id="table-error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse admission-table">
+                    <thead>
+                        <tr class="bg-gray-800 text-white">
+                            <th class="p-2 text-left">S/N</th>
+                            <th class="p-2 text-left">Student ID</th>
+                            <th class="p-2 text-left">Name</th>
+                            <th class="p-2 text-left">Class</th>
+                            <th class="p-2 text-left">Arm</th>
+                            <th class="p-2 text-left">Date of Birth</th>
+                            <th class="p-2 text-left">Gender</th>
+                            <th class="p-2 text-left">Parent Name</th>
+                            <th class="p-2 text-left">Contact</th>
+                            <th class="p-2 text-left">Admission Date</th>
+                            <th class="p-2 text-left">Total Fees</th>
+                            <th class="p-2 text-left">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="admission-table-body">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-6 rounded-lg shadow-lg max-w-3xl w-full">
+                <h2 class="text-lg font-semibold text-gray-700 mb-4">Edit Student</h2>
+                <div id="edit-error-message" class="hidden text-red-500 text-sm mb-4"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="hidden" id="edit-reg-number">
+                    <!-- Full Name -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-full-name">Full Name</label>
+                        <input
+                            type="text"
+                            id="edit-full-name"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                    </div>
+                    <!-- Date of Birth -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-dob">Date of Birth</label>
+                        <input
+                            type="date"
+                            id="edit-dob"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                    </div>
+                    <!-- Gender -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-gender">Gender</label>
+                        <select
+                            id="edit-gender"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                        </select>
+                    </div>
+                    <!-- Parent/Guardian Name -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-parent-name">Parent/Guardian Name</label>
+                        <input
+                            type="text"
+                            id="edit-parent-name"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                    </div>
+                    <!-- Contact Number -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-contact">Contact Number</label>
+                        <input
+                            type="tel"
+                            id="edit-contact"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            pattern="\+?[0-9]{10,14}"
+                            required
+                        >
+                    </div>
+                    <!-- Address -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-address">Address</label>
+                        <input
+                            type="text"
+                            id="edit-address"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                    </div>
+                    <!-- Class -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-class">Class</label>
+                        <select
+                            id="edit-class"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                            <option value="Nur 1">Nur 1</option>
+                            <option value="Nur 2">Nur 2</option>
+                            <option value="Nur 3">Nur 3</option>
+                            <option value="Basic 1">Basic 1</option>
+                            <option value="Basic 2">Basic 2</option>
+                            <option value="Basic 3">Basic 3</option>
+                            <option value="Basic 4">Basic 4</option>
+                            <option value="Basic 5">Basic 5</option>
+                            <option value="Basic 6">Basic 6</option>
+                            <option value="JSS 1">JSS 1</option>
+                            <option value="JSS 2">JSS 2</option>
+                            <option value="JSS 3">JSS 3</option>
+                            <option value="SSS 1">SSS 1</option>
+                            <option value="SSS 2">SSS 2</option>
+                            <option value="SSS 3">SSS 3</option>
+                        </select>
+                    </div>
+                    <!-- Class Arm -->
+                    <div class="space-y-1">
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-class-arm">Class Arm</label>
+                        <select
+                            id="edit-class-arm"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                        </select>
+                    </div>
+                    <!-- Buttons -->
+                    <div class="md:col-span-2 flex justify-end gap-4">
+                        <button
+                            id="cancel-edit"
+                            class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-300 flex items-center text-sm"
+                        >
+                            <i class="fas fa-times mr-2"></i> Cancel
+                        </button>
+                        <button
+                            id="save-edit"
+                            class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center text-sm"
+                        >
+                            <i class="fas fa-save mr-2"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
+                const isHidden = dropdown.classList.contains('hidden');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'view-admissions.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+                const dropdown = item.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Initialize students
+        const initializeStudents = () => {
+            const existingStudents = JSON.parse(localStorage.getItem('students')) || [];
+            if (existingStudents.length === 0) {
+                const defaultStudents = [
+                    { regNumber: 'STU001', name: 'John Doe', class: 'Nur 1', classArm: 'A', dateOfBirth: '2015-01-10', gender: 'Male', parentName: 'Jane Doe', contact: '+2341234567890', address: '123 Main St', admissionDate: '2024-09-01' },
+                    { regNumber: 'STU002', name: 'Jane Smith', class: 'Nur 1', classArm: 'A', dateOfBirth: '2015-03-15', gender: 'Female', parentName: 'John Smith', contact: '+2349876543210', address: '456 Oak Ave', admissionDate: '2024-09-01' }
+                ];
+                localStorage.setItem('students', JSON.stringify(defaultStudents));
+            }
+        };
+
+        // Get total fees for a student
+        const getTotalFees = (className, classArm) => {
+            const fees = JSON.parse(localStorage.getItem('fees')) || [];
+            const classKey = `${className}_${classArm}`;
+            const fee = fees.find(f => f.classes.includes(classKey));
+            if (fee) {
+                return fee.categories.reduce((sum, cat) => sum + cat.amount, 0);
+            }
+            return 0;
+        };
+
+        // Load students
+        const loadStudents = () => {
+            const className = document.getElementById('class').value;
+            const classArm = document.getElementById('class-arm').value;
+            const search = document.getElementById('search').value.toLowerCase();
+            const tbody = document.getElementById('admission-table-body');
+            const tableErrorMessage = document.getElementById('table-error-message');
+            tbody.innerHTML = '';
+
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students = students.filter(student => {
+                const matchesClass = !className || student.class === className;
+                const matchesArm = !classArm || student.classArm === classArm;
+                const matchesSearch = !search || 
+                    student.name.toLowerCase().includes(search) || 
+                    student.regNumber.toLowerCase().includes(search);
+                return matchesClass && matchesArm && matchesSearch;
+            });
+
+            if (students.length === 0) {
+                tableErrorMessage.textContent = 'No students found';
+                tableErrorMessage.classList.remove('hidden');
+                return;
+            }
+
+            students.forEach((student, index) => {
+                const totalFees = getTotalFees(student.class, student.classArm);
+                const row = document.createElement('tr');
+                row.className = 'border-b hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="p-2">${index + 1}</td>
+                    <td class="p-2">${student.regNumber}</td>
+                    <td class="p-2">${student.name}</td>
+                    <td class="p-2">${student.class}</td>
+                    <td class="p-2">${student.classArm}</td>
+                    <td class="p-2">${student.dateOfBirth}</td>
+                    <td class="p-2">${student.gender}</td>
+                    <td class="p-2">${student.parentName}</td>
+                    <td class="p-2">${student.contact}</td>
+                    <td class="p-2">${student.admissionDate}</td>
+                    <td class="p-2">₦${totalFees}</td>
+                    <td class="p-2 flex gap-2">
+                        <button class="text-yellow-500 hover:text-yellow-700 edit-student" data-id="${student.regNumber}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="text-red-500 hover:text-red-700 delete-student" data-id="${student.regNumber}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+
+            tableErrorMessage.classList.add('hidden');
+
+            // Add event listeners for edit and delete
+            document.querySelectorAll('.edit-student').forEach(btn => {
+                btn.addEventListener('click', () => openEditModal(btn.dataset.id));
+            });
+            document.querySelectorAll('.delete-student').forEach(btn => {
+                btn.addEventListener('click', () => deleteStudent(btn.dataset.id));
+            });
+        };
+
+        // Open edit modal
+        const openEditModal = (regNumber) => {
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const student = students.find(s => s.regNumber === regNumber);
+            if (!student) return;
+
+            document.getElementById('edit-reg-number').value = student.regNumber;
+            document.getElementById('edit-full-name').value = student.name;
+            document.getElementById('edit-dob').value = student.dateOfBirth;
+            document.getElementById('edit-gender').value = student.gender;
+            document.getElementById('edit-parent-name').value = student.parentName;
+            document.getElementById('edit-contact').value = student.contact;
+            document.getElementById('edit-address').value = student.address;
+            document.getElementById('edit-class').value = student.class;
+            document.getElementById('edit-class-arm').value = student.classArm;
+
+            document.getElementById('edit-modal').classList.remove('hidden');
+            document.getElementById('edit-error-message').classList.add('hidden');
+        };
+
+        // Save edited student
+        document.getElementById('save-edit').addEventListener('click', () => {
+            const regNumber = document.getElementById('edit-reg-number').value;
+            const fullName = document.getElementById('edit-full-name').value.trim();
+            const dob = document.getElementById('edit-dob').value;
+            const gender = document.getElementById('edit-gender').value;
+            const parentName = document.getElementById('edit-parent-name').value.trim();
+            const contact = document.getElementById('edit-contact').value.trim();
+            const address = document.getElementById('edit-address').value.trim();
+            const className = document.getElementById('edit-class').value;
+            const classArm = document.getElementById('edit-class-arm').value;
+            const errorMessage = document.getElementById('edit-error-message');
+
+            if (!fullName || !dob || !gender || !parentName || !contact || !address || !className || !classArm) {
+                errorMessage.textContent = 'Please fill all required fields';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            if (!/\+?[0-9]{10,14}/.test(contact)) {
+                errorMessage.textContent = 'Please enter a valid contact number (10-14 digits)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            const index = students.findIndex(s => s.regNumber === regNumber);
+            if (index >= 0) {
+                students[index] = {
+                    ...students[index],
+                    name: fullName,
+                    dateOfBirth: dob,
+                    gender: gender,
+                    parentName: parentName,
+                    contact: contact,
+                    address: address,
+                    class: className,
+                    classArm: classArm
+                };
+                localStorage.setItem('students', JSON.stringify(students));
+                document.getElementById('edit-modal').classList.add('hidden');
+                loadStudents();
+                alert('Student updated successfully');
+            }
+        });
+
+        // Cancel edit
+        document.getElementById('cancel-edit').addEventListener('click', () => {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-error-message').classList.add('hidden');
+        });
+
+        // Delete student
+        const deleteStudent = (regNumber) => {
+            if (!confirm('Are you sure you want to delete this student?')) return;
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students = students.filter(s => s.regNumber !== regNumber);
+            localStorage.setItem('students', JSON.stringify(students));
+            loadStudents();
+            alert('Student deleted successfully');
+        };
+
+        // Export to CSV
+        document.getElementById('export-csv').addEventListener('click', () => {
+            const className = document.getElementById('class').value;
+            const classArm = document.getElementById('class-arm').value;
+            const search = document.getElementById('search').value.toLowerCase();
+            let students = JSON.parse(localStorage.getItem('students')) || [];
+            students = students.filter(student => {
+                const matchesClass = !className || student.class === className;
+                const matchesArm = !classArm || student.classArm === classArm;
+                const matchesSearch = !search || 
+                    student.name.toLowerCase().includes(search) || 
+                    student.regNumber.toLowerCase().includes(search);
+                return matchesClass && matchesArm && matchesSearch;
+            });
+
+            if (students.length === 0) {
+                alert('No students to export');
+                return;
+            }
+
+            const headers = ['Student ID', 'Name', 'Class', 'Class Arm', 'Date of Birth', 'Gender', 'Parent Name', 'Contact', 'Address', 'Admission Date', 'Total Fees'];
+            const rows = students.map(student => [
+                student.regNumber,
+                student.name,
+                student.class,
+                student.classArm,
+                student.dateOfBirth,
+                student.gender,
+                student.parentName,
+                student.contact,
+                student.address,
+                student.admissionDate,
+                getTotalFees(student.class, student.classArm)
+            ]);
+
+            let csvContent = headers.join(',') + '\n' + rows.map(row => row.join(',')).join('\n');
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'students.csv';
+            link.click();
+        });
+
+        // Filter students on input
+        ['class', 'class-arm', 'search'].forEach(id => {
+            document.getElementById(id).addEventListener('input', loadStudents);
+        });
+
+        // Initialize
+        initializeStudents();
+        loadStudents();
+    </script>
+</body>
+</html>

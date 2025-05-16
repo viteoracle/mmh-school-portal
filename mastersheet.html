@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Master Sheet of Result - School Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        .form-card, .table-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .form-card, .table-card {
+                padding: 1rem;
+            }
+            input, select, button {
+                font-size: 0.9rem;
+            }
+            .result-table th, .result-table td {
+                font-size: 0.8rem;
+                padding: 0.5rem;
+            }
+        }
+        .editable input {
+            width: 60px;
+            padding: 2px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 dropdown">
+                        <a href="add-result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="view-master-sheet.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Master Sheet</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="add-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="view-subjects.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="view-admissions.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">View Master Sheet of Result</h1>
+        </div>
+
+        <!-- Filter Form -->
+        <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-6">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Generate Result Sheet</h2>
+            <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Class -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class">Class</label>
+                    <select
+                        id="class"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select class</option>
+                        <option value="Nur 1">Nur 1</option>
+                        <option value="Nur 2">Nur 2</option>
+                        <option value="Nur 3">Nur 3</option>
+                        <option value="Basic 1">Basic 1</option>
+                        <option value="Basic 2">Basic 2</option>
+                        <option value="Basic 3">Basic 3</option>
+                        <option value="Basic 4">Basic 4</option>
+                        <option value="Basic 5">Basic 5</option>
+                        <option value="Basic 6">Basic 6</option>
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                </div>
+                <!-- Class Arm -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class-arm">Class Arm</label>
+                    <select
+                        id="class-arm"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select arm</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+                <!-- Academic Session -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="session">Academic Session</label>
+                    <select
+                        id="session"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select session</option>
+                        <option value="2023/2024">2023/2024</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                    </select>
+                </div>
+                <!-- Term -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="term">Term</label>
+                    <select
+                        id="term"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select term</option>
+                        <option value="First Term">First Term</option>
+                        <option value="Second Term">Second Term</option>
+                        <option value="Third Term">Third Term</option>
+                    </select>
+                </div>
+                <!-- Generate Button -->
+                <div class="md:col-span-4">
+                    <button
+                        id="generate-results"
+                        class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center text-sm"
+                    >
+                        <i class="fas fa-table mr-2"></i> Generate Results
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Table -->
+        <div class="table-card bg-white p-6 rounded-lg shadow-lg max-w-full mx-auto hidden" id="results-table-container">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Result Master Sheet</h2>
+            <div id="table-error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse result-table">
+                    <thead id="result-table-head">
+                        <!-- Dynamically populated -->
+                    </thead>
+                    <tbody id="result-table-body">
+                        <!-- Dynamically populated -->
+                    </tbody>
+                </table>
+            </div>
+            <!-- Footer Buttons -->
+            <div class="flex justify-end gap-4 mt-4">
+                <button
+                    id="print-all-results"
+                    class="bg-green-500 text-white p-2 rounded hover:bg-green-600 transition duration-300 flex items-center text-sm"
+                >
+                    <i class="fas fa-print mr-2"></i> Print All Results
+                </button>
+                <button
+                    id="edit-master-sheet"
+                    class="bg-yellow-500 text-white p-2 rounded hover:bg-yellow-600 transition duration-300 flex items-center text-sm"
+                >
+                    <i class="fas fa-edit mr-2"></i> Edit Master Sheet
+                </button>
+                <button
+                    id="save-master-sheet"
+                    class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center text-sm hidden"
+                >
+                    <i class="fas fa-save mr-2"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
+                const isHidden = dropdown.classList.contains('hidden');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'view-master-sheet.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+                const dropdown = item.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Initialize data
+        const initializeData = () => {
+            const existingStudents = JSON.parse(localStorage.getItem('students')) || [];
+            const existingSubjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            let existingResults = JSON.parse(localStorage.getItem('results')) || [];
+
+            if (existingStudents.length === 0) {
+                const defaultStudents = [
+                    { regNumber: 'STU001', name: 'John Doe', class: 'JSS 1', classArm: 'A' },
+                    { regNumber: 'STU002', name: 'Jane Smith', class: 'JSS 1', classArm: 'A' }
+                ];
+                localStorage.setItem('students', JSON.stringify(defaultStudents));
+            }
+
+            if (existingSubjects.length === 0) {
+                const defaultSubjects = [
+                    { subjectCode: 'MATH001', name: 'Mathematics', session: '2024/2025', classes: ['JSS 1'] },
+                    { subjectCode: 'ENG001', name: 'English', session: '2024/2025', classes: ['JSS 1'] }
+                ];
+                localStorage.setItem('subjects', JSON.stringify(defaultSubjects));
+            }
+
+            if (existingResults.length === 0) {
+                const defaultResults = [
+                    { studentId: 'STU001', subjectCode: 'MATH001', score: 85, grade: 'A', session: '2024/2025', term: 'First Term', recordedAt: '2024-10-01' },
+                    { studentId: 'STU001', subjectCode: 'ENG001', score: 70, grade: 'A', session: '2024/2025', term: 'First Term', recordedAt: '2024-10-01' },
+                    { studentId: 'STU002', subjectCode: 'MATH001', score: 65, grade: 'B', session: '2024/2025', term: 'First Term', recordedAt: '2024-10-01' },
+                    { studentId: 'STU002', subjectCode: 'ENG001', score: 80, grade: 'A', session: '2024/2025', term: 'First Term', recordedAt: '2024-10-01' }
+                ];
+                localStorage.setItem('results', JSON.stringify(defaultResults));
+            }
+        };
+
+        // Calculate grade
+        const calculateGrade = (score) => {
+            if (score >= 70) return 'A';
+            if (score >= 60) return 'B';
+            if (score >= 50) return 'C';
+            if (score >= 40) return 'D';
+            return 'F';
+        };
+
+        // Store filtered subjects for editing
+        let filteredSubjects = [];
+
+        // Generate results
+        document.getElementById('generate-results').addEventListener('click', () => {
+            const className = document.getElementById('class').value;
+            const classArm = document.getElementById('class-arm').value;
+            const session = document.getElementById('session').value;
+            const term = document.getElementById('term').value;
+            const errorMessage = document.getElementById('error-message');
+            const tableContainer = document.getElementById('results-table-container');
+            const tableHead = document.getElementById('result-table-head');
+            const tableBody = document.getElementById('result-table-body');
+
+            if (!className || !classArm || !session || !term) {
+                errorMessage.textContent = 'Please fill all required fields';
+                errorMessage.classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                return;
+            }
+
+            errorMessage.classList.add('hidden');
+            tableContainer.classList.remove('hidden');
+
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            const results = JSON.parse(localStorage.getItem('results')) || [];
+
+            // Filter students and subjects
+            const filteredStudents = students.filter(s => s.class === className && s.classArm === classArm);
+            filteredSubjects = subjects.filter(s => s.session === session && s.classes.includes(className));
+
+            if (filteredStudents.length === 0 || filteredSubjects.length === 0) {
+                document.getElementById('table-error-message').textContent = 'No students or subjects found for the selected criteria';
+                document.getElementById('table-error-message').classList.remove('hidden');
+                tableContainer.classList.add('hidden');
+                return;
+            }
+
+            document.getElementById('table-error-message').classList.add('hidden');
+
+            // Generate table headers
+            let headers = `
+                <tr class="bg-gray-800 text-white">
+                    <th class="p-2 text-left">S/N</th>
+                    <th class="p-2 text-left">Student ID</th>
+                    <th class="p-2 text-left">Student Name</th>
+            `;
+            filteredSubjects.forEach(subject => {
+                headers += `<th class="p-2 text-left">${subject.name}</th>`;
+            });
+            headers += `
+                    <th class="p-2 text-left">Total Score</th>
+                    <th class="p-2 text-left">Average Score</th>
+                    <th class="p-2 text-left">Grade</th>
+                    <th class="p-2 text-left">Position</th>
+                    <th class="p-2 text-left">Action</th>
+                </tr>
+            `;
+            tableHead.innerHTML = headers;
+
+            // Generate table body
+            const studentResults = filteredStudents.map((student, index) => {
+                let totalScore = 0;
+                const subjectScores = filteredSubjects.map(subject => {
+                    const result = results.find(r => r.studentId === student.regNumber && r.subjectCode === subject.subjectCode && r.session === session && r.term === term);
+                    const score = result ? parseInt(result.score) : 0;
+                    totalScore += score;
+                    return { subjectCode: subject.subjectCode, score, grade: calculateGrade(score) };
+                });
+                const averageScore = totalScore / filteredSubjects.length || 0;
+                return {
+                    index: index + 1,
+                    studentId: student.regNumber,
+                    studentName: student.name,
+                    subjectScores,
+                    totalScore,
+                    averageScore: averageScore.toFixed(2),
+                    grade: calculateGrade(averageScore)
+                };
+            });
+
+            // Calculate positions
+            const sortedResults = [...studentResults].sort((a, b) => b.averageScore - a.averageScore);
+            studentResults.forEach(result => {
+                const positionIndex = sortedResults.findIndex(r => r.studentId === result.studentId);
+                result.position = positionIndex + 1;
+            });
+
+            // Populate table body
+            tableBody.innerHTML = '';
+            studentResults.forEach(result => {
+                let row = `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="p-2">${result.index}</td>
+                        <td class="p-2">${result.studentId}</td>
+                        <td class="p-2">${result.studentName}</td>
+                `;
+                result.subjectScores.forEach(score => {
+                    row += `<td class="p-2">${score.score} (${score.grade})</td>`;
+                });
+                row += `
+                        <td class="p-2">${result.totalScore}</td>
+                        <td class="p-2">${result.averageScore}</td>
+                        <td class="p-2">${result.grade}</td>
+                        <td class="p-2">${result.position}</td>
+                        <td class="p-2">
+                            <button class="text-blue-500 hover:text-blue-700 print-result" data-id="${result.studentId}">
+                                <i class="fas fa-print"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tableBody.innerHTML += row;
+            });
+
+            // Add print result event listeners
+            document.querySelectorAll('.print-result').forEach(btn => {
+                btn.addEventListener('click', () => printIndividualResult(btn.dataset.id, className, classArm, session, term));
+            });
+        });
+
+        // Print individual result
+        const printIndividualResult = (studentId, className, classArm, session, term) => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            const results = JSON.parse(localStorage.getItem('results')) || [];
+
+            const student = students.find(s => s.regNumber === studentId);
+            const filteredSubjects = subjects.filter(s => s.session === session && s.classes.includes(className));
+            const studentResults = results.filter(r => r.studentId === studentId && r.session === session && r.term === term);
+
+            let y = 20;
+            doc.setFontSize(16);
+            doc.text('Student Result Sheet', 105, y, { align: 'center' });
+            y += 10;
+            doc.setFontSize(12);
+            doc.text(`Name: ${student.name}`, 20, y);
+            y += 10;
+            doc.text(`Class: ${className} ${classArm}`, 20, y);
+            y += 10;
+            doc.text(`Session: ${session}`, 20, y);
+            y += 10;
+            doc.text(`Term: ${term}`, 20, y);
+            y += 20;
+
+            doc.autoTable({
+                startY: y,
+                head: [['Subject', 'Score', 'Grade']],
+                body: filteredSubjects.map(subject => {
+                    const result = studentResults.find(r => r.subjectCode === subject.subjectCode);
+                    return [subject.name, result ? result.score : '0', result ? result.grade : 'F'];
+                }),
+                theme: 'grid',
+                headStyles: { fillColor: [0, 0, 0] },
+                margin: { top: 10 }
+            });
+
+            y = doc.lastAutoTable.finalY + 10;
+            const totalScore = studentResults.reduce((sum, r) => sum + parseInt(r.score), 0);
+            const averageScore = (totalScore / filteredSubjects.length || 0).toFixed(2);
+            doc.text(`Total Score: ${totalScore}`, 20, y);
+            y += 10;
+            doc.text(`Average Score: ${averageScore}`, 20, y);
+            y += 10;
+            doc.text(`Grade: ${calculateGrade(averageScore)}`, 20, y);
+
+            doc.save(`${student.name}_Result_${session}_${term}.pdf`);
+        };
+
+        // Print all results
+        document.getElementById('print-all-results').addEventListener('click', () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const className = document.getElementById('class').value;
+            const classArm = document.getElementById('class-arm').value;
+            const session = document.getElementById('session').value;
+            const term = document.getElementById('term').value;
+            const students = JSON.parse(localStorage.getItem('students')) || [];
+            const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            const results = JSON.parse(localStorage.getItem('results')) || [];
+
+            const filteredStudents = students.filter(s => s.class === className && s.classArm === classArm);
+            const filteredSubjects = subjects.filter(s => s.session === session && s.classes.includes(className));
+
+            let y = 20;
+            doc.setFontSize(16);
+            doc.text(`Result Master Sheet - ${className} ${classArm}`, 105, y, { align: 'center' });
+            y += 10;
+            doc.setFontSize(12);
+            doc.text(`Session: ${session}`, 20, y);
+            y += 10;
+            doc.text(`Term: ${term}`, 20, y);
+            y += 20;
+
+            const head = ['S/N', 'Student ID', 'Name', ...filteredSubjects.map(s => s.name), 'Total', 'Average', 'Grade', 'Position'];
+            const body = filteredStudents.map((student, index) => {
+                const studentResults = results.filter(r => r.studentId === student.regNumber && r.session === session && r.term === term);
+                const totalScore = studentResults.reduce((sum, r) => sum + parseInt(r.score), 0);
+                const averageScore = (totalScore / filteredSubjects.length || 0).toFixed(2);
+                const studentRow = [index + 1, student.regNumber, student.name];
+                filteredSubjects.forEach(subject => {
+                    const result = studentResults.find(r => r.subjectCode === subject.subjectCode);
+                    studentRow.push(result ? `${result.score} (${result.grade})` : '0 (F)');
+                });
+                studentRow.push(totalScore, averageScore, calculateGrade(averageScore));
+                const position = filteredStudents
+                    .map(s => ({
+                        id: s.regNumber,
+                        avg: results
+                            .filter(r => r.studentId === s.regNumber && r.session === session && r.term === term)
+                            .reduce((sum, r) => sum + parseInt(r.score), 0) / filteredSubjects.length
+                    }))
+                    .sort((a, b) => b.avg - a.avg)
+                    .findIndex(s => s.id === student.regNumber) + 1;
+                studentRow.push(position);
+                return studentRow;
+            });
+
+            doc.autoTable({
+                startY: y,
+                head: [head],
+                body: body,
+                theme: 'grid',
+                headStyles: { fillColor: [0, 0, 0] },
+                margin: { top: 10 }
+            });
+
+            doc.save(`Master_Sheet_${className}_${classArm}_${session}_${term}.pdf`);
+        });
+
+        // Edit master sheet
+        let isEditing = false;
+        document.getElementById('edit-master-sheet').addEventListener('click', () => {
+            isEditing = !isEditing;
+            const tableBody = document.getElementById('result-table-body');
+            const saveButton = document.getElementById('save-master-sheet');
+            const subjectScores = tableBody.querySelectorAll('tr');
+
+            subjectScores.forEach(row => {
+                const scoreCells = row.querySelectorAll(`td:nth-child(n+4):nth-child(-n+${filteredSubjects.length + 3})`);
+                scoreCells.forEach(cell => {
+                    if (isEditing) {
+                        const score = cell.textContent.split(' ')[0] || '0';
+                        cell.innerHTML = `<input type="number" min="0" max="100" value="${score}" class="editable">`;
+                    } else {
+                        const score = cell.querySelector('input')?.value || '0';
+                        cell.textContent = `${score} (${calculateGrade(parseInt(score))})`;
+                    }
+                });
+            });
+
+            saveButton.classList.toggle('hidden', !isEditing);
+            document.getElementById('edit-master-sheet').textContent = isEditing ? 'Cancel Edit' : 'Edit Master Sheet';
+        });
+
+        // Save edited master sheet
+        document.getElementById('save-master-sheet').addEventListener('click', () => {
+            const className = document.getElementById('class').value;
+            const classArm = document.getElementById('class-arm').value;
+            const session = document.getElementById('session').value;
+            const term = document.getElementById('term').value;
+            const tableBody = document.getElementById('result-table-body');
+            const rows = tableBody.querySelectorAll('tr');
+            let results = JSON.parse(localStorage.getItem('results')) || [];
+
+            rows.forEach(row => {
+                const studentId = row.querySelector('td:nth-child(2)').textContent;
+                const scoreInputs = row.querySelectorAll('.editable');
+                scoreInputs.forEach((input, index) => {
+                    const score = parseInt(input.value) || 0;
+                    const subjectCode = filteredSubjects[index].subjectCode;
+                    const existingResult = results.find(r => r.studentId === studentId && r.subjectCode === subjectCode && r.session === session && r.term === term);
+                    if (existingResult) {
+                        existingResult.score = score;
+                        existingResult.grade = calculateGrade(score);
+                    } else {
+                        results.push({
+                            studentId,
+                            subjectCode,
+                            score,
+                            grade: calculateGrade(score),
+                            session,
+                            term,
+                            recordedAt: new Date().toISOString().split('T')[0]
+                        });
+                    }
+                });
+            });
+
+            localStorage.setItem('results', JSON.stringify(results));
+            isEditing = false;
+            document.getElementById('save-master-sheet').classList.add('hidden');
+            document.getElementById('edit-master-sheet').textContent = 'Edit Master Sheet';
+            alert('Master sheet saved successfully');
+            document.getElementById('generate-results').click();
+        });
+
+        // Initialize
+        initializeData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Subject - School Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        .form-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 1rem;
+            }
+            input, select, button {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 dropdown">
+                        <a href="add-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="view-subjects.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="view-admissions.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Add Subject</h1>
+        </div>
+
+        <!-- Subject Form -->
+        <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Add New Subject</h2>
+            <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Subject Name -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="subject-name">Subject Name</label>
+                    <input
+                        type="text"
+                        id="subject-name"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., Mathematics"
+                        required
+                    >
+                </div>
+                <!-- Academic Session -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="session">Academic Session</label>
+                    <select
+                        id="session"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select session</option>
+                        <option value="2023/2024">2023/2024</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                    </select>
+                </div>
+                <!-- Classes -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="classes">Classes</label>
+                    <select
+                        id="classes"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        multiple
+                        required
+                    >
+                        <option value="Nur 1">Nur 1</option>
+                        <option value="Nur 2">Nur 2</option>
+                        <option value="Nur 3">Nur 3</option>
+                        <option value="Basic 1">Basic 1</option>
+                        <option value="Basic 2">Basic 2</option>
+                        <option value="Basic 3">Basic 3</option>
+                        <option value="Basic 4">Basic 4</option>
+                        <option value="Basic 5">Basic 5</option>
+                        <option value="Basic 6">Basic 6</option>
+                        <option value="JSS 1">JSS 1</option>
+                        <option value="JSS 2">JSS 2</option>
+                        <option value="JSS 3">JSS 3</option>
+                        <option value="SSS 1">SSS 1</option>
+                        <option value="SSS 2">SSS 2</option>
+                        <option value="SSS 3">SSS 3</option>
+                    </select>
+                </div>
+                <!-- Subject Teacher -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="teacher">Subject Teacher (Optional)</label>
+                    <input
+                        type="text"
+                        id="teacher"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., Mr. John Smith"
+                    >
+                </div>
+                <!-- Save Button -->
+                <div class="md:col-span-2">
+                    <button
+                        id="save-subject"
+                        class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center text-sm"
+                    >
+                        <i class="fas fa-save mr-2"></i> Save Subject
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
+                const isHidden = dropdown.classList.contains('hidden');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'add-subject.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+                const dropdown = item.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Initialize subjects
+        const initializeSubjects = () => {
+            const existingSubjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            if (existingSubjects.length === 0) {
+                const defaultSubjects = [
+                    { subjectCode: 'MATH001', name: 'Mathematics', session: '2024/2025', classes: ['JSS 1', 'JSS 2'], teacher: 'Mr. John Smith', createdAt: '2024-09-01' },
+                    { subjectCode: 'ENG001', name: 'English', session: '2024/2025', classes: ['JSS 1', 'JSS 2'], teacher: 'Ms. Jane Doe', createdAt: '2024-09-01' }
+                ];
+                localStorage.setItem('subjects', JSON.stringify(defaultSubjects));
+            }
+        };
+
+        // Generate subject code
+        const generateSubjectCode = (name, subjects) => {
+            const prefix = name.slice(0, 3).toUpperCase();
+            const count = subjects.filter(s => s.subjectCode.startsWith(prefix)).length + 1;
+            return `${prefix}${String(count).padStart(3, '0')}`;
+        };
+
+        // Save subject
+        document.getElementById('save-subject').addEventListener('click', () => {
+            const subjectName = document.getElementById('subject-name').value.trim();
+            const session = document.getElementById('session').value;
+            const classesSelect = document.getElementById('classes');
+            const selectedClasses = Array.from(classesSelect.selectedOptions).map(option => option.value);
+            const teacher = document.getElementById('teacher').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (!subjectName || !session || selectedClasses.length === 0) {
+                errorMessage.textContent = 'Please fill all required fields (Subject Name, Session, Classes)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const subjects = JSON.parse(localStorage.getItem('subjects')) || [];
+            if (subjects.some(s => s.name.toLowerCase() === subjectName.toLowerCase() && s.session === session)) {
+                errorMessage.textContent = 'A subject with this name already exists for the selected session';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const subjectCode = generateSubjectCode(subjectName, subjects);
+            const newSubject = {
+                subjectCode,
+                name: subjectName,
+                session,
+                classes: selectedClasses,
+                teacher: teacher || '',
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
+            subjects.push(newSubject);
+            localStorage.setItem('subjects', JSON.stringify(subjects));
+            alert(`Subject added successfully! Subject Code: ${subjectCode}`);
+            document.querySelector('form').reset();
+            errorMessage.classList.add('hidden');
+        });
+
+        // Clear error messages on input
+        ['subject-name', 'session', 'classes', 'teacher'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                document.getElementById('error-message').classList.add('hidden');
+            });
+        });
+
+        // Initialize
+        initializeSubjects();
+    </script>
+</body>
+</html>
