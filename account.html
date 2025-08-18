@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>School Portal - Account</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        @media (max-width: 480px) {
+            .overview-stats {
+                grid-template-columns: 1fr;
+            }
+            .payment-table {
+                overflow-x: auto;
+            }
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 50;
+        }
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 5px;
+            width: 90%;
+            max-width: 500px;
+            color: black;
+        }
+        .close {
+            float: right;
+            font-size: 20px;
+            cursor: pointer;
+        }
+        .receipt-content {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        .receipt-logo {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .receipt-signature {
+            margin-top: 20px;
+            text-align: right;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">MMH School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="index3.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="index3.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="index3.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="mastersheet.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View mastersheet</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="add-result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View mastersheet</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Results Comment</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Results Approval</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Classarm</a>
+                        <a href="class.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classarm</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="add-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="view-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="add-staff.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Staff</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Staff</a>
+                        <a href="add-student.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Student</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Student</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="view-classlist.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-classlist.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="view-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="account.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Account</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Account Overview</h1>
+            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+                <i class="fas fa-download text-xl"></i> Export Data
+            </button>
+        </div>
+
+        <!-- Account Overview -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overview-stats mb-6">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-user-graduate text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">5</h3>
+                        <p class="text-gray-600">Students Managed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-green-100 text-green-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-check-circle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">3</h3>
+                        <p class="text-gray-600">Paid Bills</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">2</h3>
+                        <p class="text-gray-600">Pending Bills</p>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <div class="flex items-center">
+                    <div class="w-12 h-12 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-4">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold">1</h3>
+                        <p class="text-gray-600">Overdue Bills</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bill Summary -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Bill Summary</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-600">Tuition Fees: <span class="font-semibold">₦50,000</span> (Due: 2025-06-30)</p>
+                    <p class="text-gray-600">Extracurricular: <span class="font-semibold">₦5,000</span> (Due: 2025-06-30)</p>
+                    <p class="text-gray-600">Uniforms: <span class="font-semibold">₦3,000</span> (Paid)</p>
+                </div>
+                <div>
+                    <p class="text-gray-600">Books: <span class="font-semibold">₦2,000</span> (Pending)</p>
+                    <p class="text-gray-600">Total Due: <span class="font-semibold text-red-500">₦55,000</span></p>
+                    <button id="pay-now" class="mt-2 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Pay Now</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment History -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Payment History</h2>
+            <div class="space-y-2" id="payment-history">
+                <p class="text-gray-600">2025-06-01: ₦20,000 (Card) - <a href="#" class="text-blue-500 download-receipt">Download Receipt</a></p>
+                <p class="text-gray-600">2025-05-15: ₦15,000 (Bank Transfer) - <a href="#" class="text-blue-500 download-receipt">Download Receipt</a></p>
+            </div>
+        </div>
+
+        <!-- View Payment Section -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Payment Status</h2>
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    <select id="filter-class" class="p-2 border rounded">
+                        <option value="">All Classes</option>
+                        <option value="Grade 1">Grade 1</option>
+                        <option value="Grade 2">Grade 2</option>
+                        <option value="Grade 3">Grade 3</option>
+                    </select>
+                    <select id="filter-student" class="p-2 border rounded ml-2">
+                        <option value="">All Students</option>
+                        <option value="John Doe">John Doe</option>
+                        <option value="Jane Smith">Jane Smith</option>
+                        <option value="Mike Johnson">Mike Johnson</option>
+                    </select>
+                </div>
+                <button id="view-payment" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">View Payment</button>
+            </div>
+            <div id="payment-table" class="hidden">
+                <table class="w-full text-left border-collapse payment-table">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="p-2 border">Student Name</th>
+                            <th class="p-2 border">Reg Number</th>
+                            <th class="p-2 border">Payment Status</th>
+                            <th class="p-2 border">Amount Paid</th>
+                            <th class="p-2 border">Balance Remaining</th>
+                            <th class="p-2 border">Date of Payment</th>
+                        </tr>
+                    </thead>
+                    <tbody id="payment-data">
+                        <tr class="border" data-class="Grade 1">
+                            <td class="p-2">John Doe</td>
+                            <td class="p-2">STU001</td>
+                            <td class="p-2 text-green-500">Paid</td>
+                            <td class="p-2">₦50,000</td>
+                            <td class="p-2">₦0</td>
+                            <td class="p-2">2025-06-01</td>
+                        </tr>
+                        <tr class="border" data-class="Grade 2">
+                            <td class="p-2">Jane Smith</td>
+                            <td class="p-2">STU002</td>
+                            <td class="p-2 text-yellow-500">Pending</td>
+                            <td class="p-2">₦20,000</td>
+                            <td class="p-2">₦35,000</td>
+                            <td class="p-2">N/A</td>
+                        </tr>
+                        <tr class="border" data-class="Grade 3">
+                            <td class="p-2">Mike Johnson</td>
+                            <td class="p-2">STU003</td>
+                            <td class="p-2 text-red-500">Overdue</td>
+                            <td class="p-2">₦0</td>
+                            <td class="p-2">₦55,000</td>
+                            <td class="p-2">N/A</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="bg-white p-6 rounded-lg shadow mb-6">
+            <h2 class="text-xl font-semibold mb-4">Payment Options</h2>
+            <div class="space-y-2">
+                <p class="text-gray-600">Card (Credit/Debit): <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Pay</button></p>
+                <p class="text-gray-600">Bank Transfer: <a href="#" class="text-blue-500">Instructions</a></p>
+                <p class="text-gray-600">Mobile Money: <button class="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600">Pay</button></p>
+            </div>
+        </div>
+
+        <!-- Contact Support -->
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h2 class="text-xl font-semibold mb-4">Contact Support</h2>
+            <p class="text-gray-600">Email: <a href="mailto:support@mmhschool.com" class="text-blue-500">support@mmhschool.com</a></p>
+            <p class="text-gray-600">Phone: <a href="tel:+2348012345678" class="text-blue-500">+234 801 234 5678</a></p>
+            <button class="mt-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Live Chat</button>
+        </div>
+
+        <!-- Footer -->
+        <footer class="mt-6 text-center text-gray-600">
+            <p>© 2025 MMH School Portal | <a href="#" class="text-blue-500">Privacy Policy</a> | <a href="#" class="text-blue-500">Terms of Service</a> | Updated: 10:33 AM WAT, Friday, June 20, 2025</p>
+        </footer>
+
+        <!-- Pay Now Modal -->
+        <div id="pay-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('pay-modal').style.display='none'">×</span>
+                <h2 class="text-xl font-semibold mb-4">Payment Details</h2>
+                <form id="payment-form">
+                    <label class="block mb-2">Select Payment Mode:</label>
+                    <select id="payment-mode" class="w-full p-2 border rounded mb-4">
+                        <option value="cash">Cash</option>
+                        <option value="transfer">Bank Transfer</option>
+                        <option value="pos">POS</option>
+                    </select>
+                    <div id="payment-details" class="mb-4">
+                        <label class="block mb-2">Amount: <input type="number" id="payment-amount" value="55000" min="0" class="w-1/2 p-2 border rounded inline" onchange="updateBalance()"> ₦</label>
+                        <input type="text" id="transaction-id" placeholder="Transaction ID/Reference" class="w-full p-2 border rounded mb-2">
+                        <input type="text" id="payer-name" placeholder="Payer Name" class="w-full p-2 border rounded mb-2">
+                        <input type="text" id="student-id" placeholder="Student ID (e.g., STU001)" class="w-full p-2 border rounded mb-2">
+                        <input type="text" id="payment-description" placeholder="Payment Description" class="w-full p-2 border rounded mb-2">
+                        <p id="balance-info" class="text-red-500"></p>
+                    </div>
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Proceed to Confirm</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div id="confirm-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('confirm-modal').style.display='none'">×</span>
+                <h2 class="text-xl font-semibold mb-4">Confirm Payment</h2>
+                <p id="confirm-details" class="mb-4"></p>
+                <button id="confirm-payment" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Confirm</button>
+                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 ml-2" onclick="document.getElementById('confirm-modal').style.display='none'">Cancel</button>
+            </div>
+        </div>
+
+        <!-- Success Modal -->
+        <div id="success-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('success-modal').style.display='none'">×</span>
+                <h2 class="text-xl font-semibold mb-4 text-green-500">Payment Successful!</h2>
+                <p>Your payment has been processed. Check Payment Status for updates.</p>
+            </div>
+        </div>
+
+        <!-- Receipt Download Modal -->
+        <div id="receipt-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="document.getElementById('receipt-modal').style.display='none'">×</span>
+                <h2 class="text-xl font-semibold mb-4">Download Receipt</h2>
+                <div class="mb-4">
+                    <label class="block mb-2">Student Name:</label>
+                    <select id="receipt-name" class="w-full p-2 border rounded mb-2">
+                        <option value="">Select Name</option>
+                        <option value="John Doe">John Doe</option>
+                        <option value="Jane Smith">Jane Smith</option>
+                        <option value="Mike Johnson">Mike Johnson</option>
+                    </select>
+                    <label class="block mb-2">Student ID:</label>
+                    <select id="receipt-id" class="w-full p-2 border rounded mb-2">
+                        <option value="">Select ID</option>
+                        <option value="STU001">STU001</option>
+                        <option value="STU002">STU002</option>
+                        <option value="STU003">STU003</option>
+                    </select>
+                    <label class="block mb-2">Class:</label>
+                    <select id="receipt-class" class="w-full p-2 border rounded mb-2">
+                        <option value="">All Classes</option>
+                        <option value="Grade 1">Grade 1</option>
+                        <option value="Grade 2">Grade 2</option>
+                        <option value="Grade 3">Grade 3</option>
+                    </select>
+                </div>
+                <button id="generate-receipt" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Generate Receipt</button>
+                <div id="receipt-preview" class="mt-4 hidden receipt-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn?.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn?.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle (only on arrow click)
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.closest('li').querySelector('.dropdown');
+                const isHidden = dropdown.classList.contains('hidden');
+
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    e.preventDefault();
+                    window.location.href = href;
+                }
+
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+            }
+        });
+
+        // View Payment functionality
+        const viewPaymentBtn = document.getElementById('view-payment');
+        const paymentTable = document.getElementById('payment-table');
+        const filterClass = document.getElementById('filter-class');
+        const filterStudent = document.getElementById('filter-student');
+        const paymentData = document.getElementById('payment-data');
+
+        viewPaymentBtn?.addEventListener('click', () => {
+            paymentTable.classList.toggle('hidden');
+        });
+
+        [filterClass, filterStudent].forEach(filter => {
+            filter?.addEventListener('change', () => {
+                const classFilter = filterClass.value;
+                const studentFilter = filterStudent.value;
+                const rows = paymentData.getElementsByTagName('tr');
+
+                Array.from(rows).forEach(row => {
+                    const studentName = row.cells[0].textContent;
+                    const className = row.dataset.class || '';
+                    const shouldShow = (!classFilter || className === classFilter) &&
+                                      (!studentFilter || studentName === studentFilter);
+                    row.style.display = shouldShow ? '' : 'none';
+                });
+            });
+        });
+
+        // Pay Now Modal functionality
+        const payNowBtn = document.getElementById('pay-now');
+        const payModal = document.getElementById('pay-modal');
+        const confirmModal = document.getElementById('confirm-modal');
+        const successModal = document.getElementById('success-modal');
+        const paymentForm = document.getElementById('payment-form');
+        const confirmDetails = document.getElementById('confirm-details');
+        const confirmPaymentBtn = document.getElementById('confirm-payment');
+        const paymentAmount = document.getElementById('payment-amount');
+        const balanceInfo = document.getElementById('balance-info');
+
+        function updateBalance() {
+            const amount = parseInt(paymentAmount.value) || 0;
+            const totalDue = 55000;
+            const balance = Math.max(0, totalDue - amount);
+            balanceInfo.textContent = balance > 0 ? `Remaining Balance: ₦${balance}` : '';
+        }
+
+        payNowBtn?.addEventListener('click', () => {
+            payModal.style.display = 'block';
+            paymentAmount.value = '55000'; // Reset to total due
+            updateBalance();
+        });
+
+        paymentForm?.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const paymentMode = document.getElementById('payment-mode').value;
+            const transactionId = document.getElementById('transaction-id').value;
+            const payerName = document.getElementById('payer-name').value;
+            const studentId = document.getElementById('student-id').value;
+            const paymentDesc = document.getElementById('payment-description').value;
+            const amount = parseInt(paymentAmount.value) || 0;
+
+            if (transactionId && payerName && studentId && paymentDesc && amount > 0) {
+                const balance = Math.max(0, 55000 - amount);
+                confirmDetails.textContent = `Mode: ${paymentMode}, Transaction ID: ${transactionId}, Payer: ${payerName}, Student ID: ${studentId}, Amount: ₦${amount}, Balance: ₦${balance}, Description: ${paymentDesc}`;
+                payModal.style.display = 'none';
+                confirmModal.style.display = 'block';
+            } else {
+                alert('Please fill all fields and enter a valid amount.');
+            }
+        });
+
+        confirmPaymentBtn?.addEventListener('click', () => {
+            const transactionId = document.getElementById('transaction-id').value;
+            const studentId = document.getElementById('student-id').value;
+            const studentName = document.getElementById('payer-name').value.split(' ')[0]; // First name
+            const amount = parseInt(document.getElementById('payment-amount').value) || 0;
+            const balance = Math.max(0, 55000 - amount);
+
+            // Update Payment Status table
+            const rows = paymentData.getElementsByTagName('tr');
+            Array.from(rows).forEach(row => {
+                if (row.cells[1].textContent === studentId) {
+                    row.cells[2].textContent = balance > 0 ? 'Pending' : 'Paid';
+                    row.cells[2].className = balance > 0 ? 'p-2 text-yellow-500' : 'p-2 text-green-500';
+                    row.cells[3].textContent = `₦${amount}`;
+                    row.cells[4].textContent = `₦${balance}`;
+                    row.cells[5].textContent = balance > 0 ? 'N/A' : new Date().toLocaleDateString();
+                }
+            });
+
+            // Add to Payment History
+            const historyDiv = document.getElementById('payment-history');
+            const newHistory = document.createElement('p');
+            newHistory.className = 'text-gray-600';
+            newHistory.innerHTML = `${new Date().toLocaleDateString()}: ₦${amount} (${transactionId}) - <a href="#" class="text-blue-500 download-receipt">Download Receipt</a>`;
+            historyDiv.appendChild(newHistory);
+
+            confirmModal.style.display = 'none';
+            successModal.style.display = 'block';
+            setTimeout(() => successModal.style.display = 'none', 3000); // Auto-close after 3 seconds
+        });
+
+        // Close modals
+        document.querySelectorAll('.close').forEach(closeBtn => {
+            closeBtn.addEventListener('click', () => {
+                document.getElementById('pay-modal').style.display = 'none';
+                document.getElementById('confirm-modal').style.display = 'none';
+                document.getElementById('success-modal').style.display = 'none';
+                document.getElementById('receipt-modal').style.display = 'none';
+            });
+        });
+
+        // Receipt Download Modal functionality
+        const receiptLinks = document.querySelectorAll('.download-receipt');
+        const receiptModal = document.getElementById('receipt-modal');
+        const receiptName = document.getElementById('receipt-name');
+        const receiptId = document.getElementById('receipt-id');
+        const receiptClass = document.getElementById('receipt-class');
+        const generateReceiptBtn = document.getElementById('generate-receipt');
+        const receiptPreview = document.getElementById('receipt-preview');
+
+        receiptLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                receiptModal.style.display = 'block';
+            });
+        });
+
+        generateReceiptBtn?.addEventListener('click', () => {
+            const name = receiptName.value;
+            const id = receiptId.value;
+            const className = receiptClass.value;
+            if (name && id && className) {
+                const receiptNumber = 'REC' + Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                const receiptContent = `
+                    <div class="receipt-content">
+                        <div class="receipt-logo">MMH School Logo</div>
+                        <h3 class="text-center font-semibold">Payment Receipt</h3>
+                        <p>Receipt No: ${receiptNumber}</p>
+                        <p>Date: ${new Date().toLocaleDateString()}</p>
+                        <p>Student Name: ${name}</p>
+                        <p>Student ID: ${id}</p>
+                        <p>Class: ${className}</p>
+                        <p>Amount Paid: ₦55000</p>
+                        <p>Balance: ₦0</p>
+                        <div class="receipt-signature">
+                            Authorized by: John Doe<br>
+                            Signature: _____________________
+                        </div>
+                    </div>
+                `;
+                receiptPreview.innerHTML = receiptContent;
+                receiptPreview.classList.remove('hidden');
+                // Simulate download (replace with actual file generation)
+                const blob = new Blob([receiptContent], { type: 'text/html' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `receipt_${receiptNumber}.html`;
+                a.click();
+                URL.revokeObjectURL(url);
+                receiptModal.style.display = 'none';
+            } else {
+                alert('Please select Name, ID, and Class.');
+            }
+        });
+
+        // Simulate real-time update
+        function updatePaymentData() {
+            const rows = paymentData.getElementsByTagName('tr');
+            Array.from(rows).forEach(row => {
+                const statusCell = row.cells[2];
+                const amountPaidCell = row.cells[3];
+                const balanceCell = row.cells[4];
+                const dateCell = row.cells[5];
+
+                if (statusCell.textContent === 'Pending' && Math.random() > 0.7) {
+                    statusCell.textContent = 'Paid';
+                    statusCell.className = 'p-2 text-green-500';
+                    amountPaidCell.textContent = '₦55,000';
+                    balanceCell.textContent = '₦0';
+                    dateCell.textContent = new Date().toLocaleDateString();
+                } else if (statusCell.textContent === 'Overdue' && Math.random() > 0.8) {
+                    statusCell.textContent = 'Paid';
+                    statusCell.className = 'p-2 text-green-500';
+                    amountPaidCell.textContent = '₦55,000';
+                    balanceCell.textContent = '₦0';
+                    dateCell.textContent = new Date().toLocaleDateString();
+                }
+            });
+        }
+
+        setInterval(updatePaymentData, 10000);
+        window.addEventListener('load', updatePaymentData);
+    </script>
+</body>
+</html>
