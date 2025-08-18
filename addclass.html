@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Portal Dashboard</title>
+    <title>Add Class - School Portal</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        body {
+            background-color: #f3f4f6;
+        }
         .sidebar {
             transition: transform 0.3s ease-in-out;
         }
@@ -17,14 +20,24 @@
             background-color: #4b5563;
             border-left-color: #3b82f6;
         }
+        .form-card {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
         @media (max-width: 768px) {
             .main-content {
                 margin-left: 0 !important;
             }
         }
-        @media (max-width: 480px) {
-            .overview-stats {
-                grid-template-columns: 1fr;
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 1rem;
+            }
+            input, select, button {
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -34,7 +47,7 @@
     <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
         <div class="flex items-center p-4 border-b border-gray-700">
             <i class="fas fa-school text-xl"></i>
-            <h2 class="ml-2 text-lg font-semibold">MMH School Portal</h2>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
             <button id="close-sidebar" class="md:hidden ml-auto text-white">
                 <i class="fas fa-times"></i>
             </button>
@@ -49,25 +62,25 @@
                     </a>
                 </li>
                 <li class="mb-1">
-                    <a href="index3.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
                         <i class="fas fa-graduation-cap mr-2"></i>
                         <span>Academic Promotion</span>
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
                     <div class="pl-4 hidden dropdown">
-                        <a href="index3.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
-                        <a href="index3.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
                     </div>
                 </li>
                 <li class="mb-1">
-                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
                         <i class="fas fa-id-card mr-2"></i>
                         <span>Cards</span>
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
                     <div class="pl-4 hidden dropdown">
                         <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
-                        <a href="mastersheet.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View mastersheet</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -77,27 +90,19 @@
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
                     <div class="pl-4 hidden dropdown">
-                        <a href="add-result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
                         <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
-                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View mastersheet</a>
-                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Results Comment</a>
-                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded"> Results Approval</a>
-                
-                
-                
                     </div>
                 </li>
                 <li class="mb-1">
-                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
                         <i class="fas fa-chalkboard mr-2"></i>
                         <span>Class</span>
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
-                    <div class="pl-4 hidden dropdown">
+                    <div class="pl-4 dropdown">
                         <a href="addclass.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
                         <a href="viewclass.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
-                        <a href="addclassarm.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Classarm</a>
-                        <a href="addclassarm.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classarm</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -108,7 +113,7 @@
                     </a>
                     <div class="pl-4 hidden dropdown">
                         <a href="add-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
-                        <a href="view-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                        <a href="view-subjects.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -129,13 +134,8 @@
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
                     <div class="pl-4 hidden dropdown">
-                        <a href="add-staff.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Staff</a>
-                        <a href="view-staff.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Staff</a>
-                        <a href="add-student.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Student
-                           
-                        </a>
-
-                        <a href="view-student.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Student</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -145,8 +145,8 @@
                         <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
                     </a>
                     <div class="pl-4 hidden dropdown">
-                        <a href="view-classlist.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
-                        <a href="edit-classlist.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -157,7 +157,7 @@
                     </a>
                     <div class="pl-4 hidden dropdown">
                         <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
-                        <a href="view-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                        <a href="view-admissions.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
                     </div>
                 </li>
                 <li class="mb-1">
@@ -171,17 +171,6 @@
                         <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
                     </div>
                 </li>
-                <li class="mb-1">
-                    <a href="account.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
-                        <i class="fas fa-list mr-2"></i>
-                        <span>Account</span>
-                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
-                    </a>
-                    <div class="pl-4 hidden dropdown">
-                        <a href="account.html" class="block p-2 text-sm hover:bg-gray-600 rounded">account</a>
-                        <a href="edit-classlist.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
-                    </div>
-                </li>
             </ul>
         </div>
     </div>
@@ -192,56 +181,72 @@
             <button id="open-sidebar" class="md:hidden text-gray-800">
                 <i class="fas fa-bars text-xl"></i>
             </button>
-            <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
-            <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-                <i class="fas fa-chalkboard-teacher text-xl"></i>Vite
-            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Add Class</h1>
         </div>
 
-        <!-- Dashboard Overview -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 overview-stats">
-            <div class="bg-white p-4 rounded-lg shadow">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-500 flex items-center justify-center mr-4">
-                        <i class="fas fa-users text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">1,245</h3>
-                        <p class="text-gray-600">Total Students</p>
-                    </div>
+        <!-- Class Form -->
+        <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Add New Class</h2>
+            <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Class Name -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class-name">Class Name</label>
+                    <input
+                        type="text"
+                        id="class-name"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., JSS 1"
+                        required
+                    >
                 </div>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-green-100 text-green-500 flex items-center justify-center mr-4">
-                        <i class="fas fa-chalkboard-teacher text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">78strategies: 78</h3>
-                        <p class="text-gray-600">Total Teachers</p>
-                    </div>
+                <!-- Academic Session -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="session">Academic Session</label>
+                    <select
+                        id="session"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select session</option>
+                        <option value="2023/2024">2023/2024</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                    </select>
                 </div>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-yellow-100 text-yellow-500 flex items-center justify-center mr-4">
-                        <i class="fas fa-money-bill text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">$12,450</h3>
-                        <p class="text-gray-600">Pending Fees</p>
-                    </div>
+                <!-- Class Teacher -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="teacher">Class Teacher (Optional)</label>
+                    <input
+                        type="text"
+                        id="teacher"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., Mr. John Smith"
+                    >
                 </div>
-            </div>
-            <div class="bg-white p-4 rounded-lg shadow">
-                <div class="flex items-center">
-                    <div class="w-12 h-12 rounded-full bg-red-100 text-red-500 flex items-center justify-center mr-4">
-                        <i class="fas fa-calendar-alt text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="text-xl font-semibold">3</h3>
-                        <p class="text-gray-600">Upcoming Events</p>
-                    </div>
+                <!-- Class Level -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="level">Class Level</label>
+                    <select
+                        id="level"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select level</option>
+                        <option value="Nursery">Nursery</option>
+                        <option value="Primary">Primary</option>
+                        <option value="Junior Secondary">Junior Secondary</option>
+                        <option value="Senior Secondary">Senior Secondary</option>
+                    </select>
+                </div>
+                <!-- Save Button -->
+                <div class="md:col-span-2">
+                    <button
+                        id="save-class"
+                        class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center text-sm"
+                    >
+                        <i class="fas fa-save mr-2"></i> Save Class
+                    </button>
                 </div>
             </div>
         </div>
@@ -252,55 +257,118 @@
         const sidebar = document.getElementById('sidebar');
         const openSidebarBtn = document.getElementById('open-sidebar');
         const closeSidebarBtn = document.getElementById('close-sidebar');
-    
-        openSidebarBtn?.addEventListener('click', () => {
+
+        openSidebarBtn.addEventListener('click', () => {
             sidebar.classList.remove('sidebar-hidden');
         });
-    
-        closeSidebarBtn?.addEventListener('click', () => {
+
+        closeSidebarBtn.addEventListener('click', () => {
             sidebar.classList.add('sidebar-hidden');
         });
-    
-        // Dropdown toggle (only on arrow click)
+
+        // Dropdown toggle
         document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
             toggle.addEventListener('click', (e) => {
                 e.preventDefault();
-                e.stopPropagation(); // Prevent parent click
-                const dropdown = toggle.closest('li').querySelector('.dropdown');
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
                 const isHidden = dropdown.classList.contains('hidden');
-    
-                // Hide all dropdowns
                 document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
-    
-                // Toggle current dropdown
                 dropdown.classList.toggle('hidden', !isHidden);
             });
         });
-    
+
         // Menu item navigation
         document.querySelectorAll('.menu-item').forEach(item => {
             item.addEventListener('click', (e) => {
                 const href = item.getAttribute('href');
                 if (href && href !== '#') {
-                    e.preventDefault(); // Prevent default link behavior
                     window.location.href = href;
                 }
-    
-                // Close sidebar on small screens
                 if (window.innerWidth < 768) {
                     sidebar.classList.add('sidebar-hidden');
                 }
             });
         });
-    
+
         // Highlight active menu item
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const currentPage = window.location.pathname.split('/').pop() || 'add-class.html';
         document.querySelectorAll('.menu-item').forEach(item => {
             if (item.getAttribute('href') === currentPage) {
                 item.classList.add('active');
+                const dropdown = item.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.remove('hidden');
+                }
             }
         });
+
+        // Initialize classes
+        const initializeClasses = () => {
+            const existingClasses = JSON.parse(localStorage.getItem('classes')) || [];
+            if (existingClasses.length === 0) {
+                const defaultClasses = [
+                    { classCode: 'CLS001', name: 'JSS 1', session: '2024/2025', level: 'Junior Secondary', teacher: 'Mr. John Smith', createdAt: '2024-09-01' },
+                    { classCode: 'CLS002', name: 'SSS 1', session: '2024/2025', level: 'Senior Secondary', teacher: 'Ms. Jane Doe', createdAt: '2024-09-01' }
+                ];
+                localStorage.setItem('classes', JSON.stringify(defaultClasses));
+            }
+        };
+
+        // Generate class code
+        const generateClassCode = (name, classes) => {
+            const prefix = 'CLS';
+            const count = classes.length + 1;
+            return `${prefix}${String(count).padStart(3, '0')}`;
+        };
+
+        // Save class
+        document.getElementById('save-class').addEventListener('click', () => {
+            const className = document.getElementById('class-name').value.trim();
+            const session = document.getElementById('session').value;
+            const level = document.getElementById('level').value;
+            const teacher = document.getElementById('teacher').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (!className || !session || !level) {
+                errorMessage.textContent = 'Please fill all required fields (Class Name, Session, Level)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const classes = JSON.parse(localStorage.getItem('classes')) || [];
+            if (classes.some(c => c.name.toLowerCase() === className.toLowerCase() && c.session === session)) {
+                errorMessage.textContent = 'A class with this name already exists for the selected session';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const classCode = generateClassCode(className, classes);
+            const newClass = {
+                classCode,
+                name: className,
+                session,
+                level,
+                teacher: teacher || '',
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
+            classes.push(newClass);
+            localStorage.setItem('classes', JSON.stringify(classes));
+            alert(`Class added successfully! Class Code: ${classCode}`);
+            document.querySelector('form').reset();
+            errorMessage.classList.add('hidden');
+        });
+
+        // Clear error messages on input
+        ['class-name', 'session', 'level', 'teacher'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                document.getElementById('error-message').classList.add('hidden');
+            });
+        });
+
+        // Initialize
+        initializeClasses();
     </script>
-    
 </body>
 </html>

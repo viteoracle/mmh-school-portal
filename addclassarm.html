@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Arm Management - School Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-color: #f3f4f6;
+        }
+        .sidebar {
+            transition: transform 0.3s ease-in-out;
+        }
+        .sidebar-hidden {
+            transform: translateX(-100%);
+        }
+        .menu-item.active {
+            background-color: #4b5563;
+            border-left-color: #3b82f6;
+        }
+        .form-card, .table-container {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 768px) {
+            .main-content {
+                margin-left: 0 !important;
+            }
+        }
+        @media (max-width: 640px) {
+            .form-card, .table-container {
+                padding: 1rem;
+            }
+            input, select, button, table {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body class="flex h-screen bg-gray-100 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="sidebar fixed inset-y-0 left-0 bg-gray-800 text-white w-64 md:w-64 md:translate-x-0 sidebar-hidden md:sidebar-hidden transition-transform duration-300 z-20">
+        <div class="flex items-center p-4 border-b border-gray-700">
+            <i class="fas fa-school text-xl"></i>
+            <h2 class="ml-2 text-lg font-semibold">School Portal</h2>
+            <button id="close-sidebar" class="md:hidden ml-auto text-white">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="p-4">
+            <p class="text-xs uppercase text-gray-400 mb-2">Main Menu</p>
+            <ul>
+                <li class="mb-1">
+                    <a href="index.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="mb-1">
+                    <a href="academic-promotion.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-graduation-cap mr-2"></i>
+                        <span>Academic Promotion</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Promote Students</a>
+                        <a href="academic-promotion.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Promotions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="cards.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-id-card mr-2"></i>
+                        <span>Cards</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Generate Cards</a>
+                        <a href="cards.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Cards</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="result.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-file-alt mr-2"></i>
+                        <span>Result</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Result</a>
+                        <a href="result.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Results</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent active">
+                        <i class="fas fa-chalkboard mr-2"></i>
+                        <span>Class</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 dropdown">
+                        <a href="addclass.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Class</a>
+                        <a href="viewclasses.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Classes</a>
+                        <a href="addclassarm.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Class Arm Management</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="subject.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-book mr-2"></i>
+                        <span>Subject</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="add-subject.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add Subject</a>
+                        <a href="view-subjects.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Subjects</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="configuration.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-cog mr-2"></i>
+                        <span>Configuration</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">General Settings</a>
+                        <a href="configuration.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Academic Settings</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="user.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-users mr-2"></i>
+                        <span>User</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Add User</a>
+                        <a href="user.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Users</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="class-list.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-list mr-2"></i>
+                        <span>Class List</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Class List</a>
+                        <a href="edit-class-list.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Edit Class List</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="admission.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        <span>Admission</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="new-admission.html" class="block p-2 text-sm hover:bg-gray-600 rounded">New Admission</a>
+                        <a href="view-admissions.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Admissions</a>
+                    </div>
+                </li>
+                <li class="mb-1">
+                    <a href="fee-setup.html" class="menu-item flex items-center p-2 rounded hover:bg-gray-700 border-l-4 border-transparent">
+                        <i class="fas fa-money-bill mr-2"></i>
+                        <span>Fee Setup</span>
+                        <i class="fas fa-angle-down ml-auto dropdown-toggle cursor-pointer"></i>
+                    </a>
+                    <div class="pl-4 hidden dropdown">
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">Configure Fees</a>
+                        <a href="fee-setup.html" class="block p-2 text-sm hover:bg-gray-600 rounded">View Fee Structure</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-4 md:ml-64 overflow-y-auto main-content">
+        <div class="flex justify-between items-center mb-4">
+            <button id="open-sidebar" class="md:hidden text-gray-800">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+            <h1 class="text-2xl font-bold text-gray-800">Class Arm Management</h1>
+        </div>
+
+        <!-- Add Class Arm Form -->
+        <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-8">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Add New Class Arm</h2>
+            <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Class -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="class-id">Class</label>
+                    <select
+                        id="class-id"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select class</option>
+                    </select>
+                </div>
+                <!-- Arm Name -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="arm-name">Arm Name</label>
+                    <input
+                        type="text"
+                        id="arm-name"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., A, B, C"
+                        required
+                    >
+                </div>
+                <!-- Academic Session -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="session">Academic Session</label>
+                    <select
+                        id="session"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        required
+                    >
+                        <option value="" disabled selected>Select session</option>
+                        <option value="2023/2024">2023/2024</option>
+                        <option value="2024/2025">2024/2025</option>
+                        <option value="2025/2026">2025/2026</option>
+                    </select>
+                </div>
+                <!-- Arm Teacher -->
+                <div class="space-y-1">
+                    <label class="block text-gray-700 font-medium text-sm" for="teacher">Arm Teacher (Optional)</label>
+                    <input
+                        type="text"
+                        id="teacher"
+                        class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                        placeholder="e.g., Mr. John Smith"
+                    >
+                </div>
+                <!-- Save Button -->
+                <div class="md:col-span-2">
+                    <button
+                        id="save-arm"
+                        class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center text-sm"
+                    >
+                        <i class="fas fa-save mr-2"></i> Save Class Arm
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Class Arms Table -->
+        <div class="table-container bg-white p-6 rounded-lg shadow-lg max-w-5xl mx-auto">
+            <h2 class="text-lg font-semibold text-gray-700 mb-4">Class Arms List</h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left text-gray-700">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">Arm Code</th>
+                            <th scope="col" class="px-6 py-3">Class Name</th>
+                            <th scope="col" class="px-6 py-3">Arm Name</th>
+                            <th scope="col" class="px-6 py-3">Session</th>
+                            <th scope="col" class="px-6 py-3">Teacher</th>
+                            <th scope="col" class="px-6 py-3">Created At</th>
+                            <th scope="col" class="px-6 py-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="arms-table-body">
+                        <!-- Class arms will be dynamically populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Edit Modal -->
+        <div id="edit-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+            <div class="relative top-20 mx-auto p-5 border w-full max-w-md shadow-lg rounded-md bg-white">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Edit Class Arm</h3>
+                <div id="edit-error-message" class="hidden text-red-500 text-sm mb-4"></div>
+                <div class="space-y-4">
+                    <input type="hidden" id="edit-arm-code">
+                    <div>
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-class-id">Class</label>
+                        <select
+                            id="edit-class-id"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                            <option value="" disabled>Select class</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-arm-name">Arm Name</label>
+                        <input
+                            type="text"
+                            id="edit-arm-name"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder="e.g., A, B, C"
+                            required
+                        >
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-session">Academic Session</label>
+                        <select
+                            id="edit-session"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            required
+                        >
+                            <option value="" disabled>Select session</option>
+                            <option value="2023/2024">2023/2024</option>
+                            <option value="2024/2025">2024/2025</option>
+                            <option value="2025/2026">2025/2026</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium text-sm" for="edit-teacher">Arm Teacher (Optional)</label>
+                        <input
+                            type="text"
+                            id="edit-teacher"
+                            class="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                            placeholder="e.g., Mr. John Smith"
+                        >
+                    </div>
+                    <div class="flex justify-end space-x-2">
+                        <button id="cancel-edit" class="bg-gray-500 text-white p-2 rounded hover:bg-gray-600 text-sm">Cancel</button>
+                        <button id="save-edit" class="bg-blue-500 text-white p-2 rounded hover:bg-blue-600 text-sm">Save Changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sidebar toggle
+        const sidebar = document.getElementById('sidebar');
+        const openSidebarBtn = document.getElementById('open-sidebar');
+        const closeSidebarBtn = document.getElementById('close-sidebar');
+
+        openSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.remove('sidebar-hidden');
+        });
+
+        closeSidebarBtn.addEventListener('click', () => {
+            sidebar.classList.add('sidebar-hidden');
+        });
+
+        // Dropdown toggle
+        document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+            toggle.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const dropdown = toggle.parentElement.nextElementSibling;
+                const isHidden = dropdown.classList.contains('hidden');
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.add('hidden'));
+                dropdown.classList.toggle('hidden', !isHidden);
+            });
+        });
+
+        // Menu item navigation
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', (e) => {
+                const href = item.getAttribute('href');
+                if (href && href !== '#') {
+                    window.location.href = href;
+                }
+                if (window.innerWidth < 768) {
+                    sidebar.classList.add('sidebar-hidden');
+                }
+            });
+        });
+
+        // Highlight active menu item
+        const currentPage = window.location.pathname.split('/').pop() || 'class-arm.html';
+        document.querySelectorAll('.menu-item').forEach(item => {
+            if (item.getAttribute('href') === currentPage) {
+                item.classList.add('active');
+                const dropdown = item.nextElementSibling;
+                if (dropdown && dropdown.classList.contains('dropdown')) {
+                    dropdown.classList.remove('hidden');
+                }
+            }
+        });
+
+        // Initialize classes and arms
+        const initializeData = () => {
+            const existingClasses = JSON.parse(localStorage.getItem('classes')) || [];
+            if (existingClasses.length === 0) {
+                const defaultClasses = [
+                    { classCode: 'CLS001', name: 'JSS 1', session: '2024/2025', level: 'Junior Secondary', teacher: 'Mr. John Smith', createdAt: '2024-09-01' },
+                    { classCode: 'CLS002', name: 'SSS 1', session: '2024/2025', level: 'Senior Secondary', teacher: 'Ms. Jane Doe', createdAt: '2024-09-01' }
+                ];
+                localStorage.setItem('classes', JSON.stringify(defaultClasses));
+            }
+
+            const existingArms = JSON.parse(localStorage.getItem('classArms')) || [];
+            if (existingArms.length === 0) {
+                const defaultArms = [
+                    { armCode: 'ARM001', classCode: 'CLS001', armName: 'A', session: '2024/2025', teacher: 'Mr. John Smith', createdAt: '2024-09-01' },
+                    { armCode: 'ARM002', classCode: 'CLS001', armName: 'B', session: '2024/2025', teacher: 'Ms. Jane Doe', createdAt: '2024-09-01' }
+                ];
+                localStorage.setItem('classArms', JSON.stringify(defaultArms));
+            }
+
+            populateClassDropdown();
+            displayClassArms();
+        };
+
+        // Populate class dropdown
+        const populateClassDropdown = () => {
+            const classes = JSON.parse(localStorage.getItem('classes')) || [];
+            const classSelect = document.getElementById('class-id');
+            const editClassSelect = document.getElementById('edit-class-id');
+            classSelect.innerHTML = '<option value="" disabled selected>Select class</option>';
+            editClassSelect.innerHTML = '<option value="" disabled>Select class</option>';
+            classes.forEach(cls => {
+                const option = document.createElement('option');
+                option.value = cls.classCode;
+                option.textContent = cls.name;
+                classSelect.appendChild(option);
+                editClassSelect.appendChild(option.cloneNode(true));
+            });
+        };
+
+        // Generate arm code
+        const generateArmCode = (arms) => {
+            const prefix = 'ARM';
+            const count = arms.length + 1;
+            return `${prefix}${String(count).padStart(3, '0')}`;
+        };
+
+        // Save class arm
+        document.getElementById('save-arm').addEventListener('click', () => {
+            const classCode = document.getElementById('class-id').value;
+            const armName = document.getElementById('arm-name').value.trim();
+            const session = document.getElementById('session').value;
+            const teacher = document.getElementById('teacher').value.trim();
+            const errorMessage = document.getElementById('error-message');
+
+            if (!classCode || !armName || !session) {
+                errorMessage.textContent = 'Please fill all required fields (Class, Arm Name, Session)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const arms = JSON.parse(localStorage.getItem('classArms')) || [];
+            if (arms.some(a => a.classCode === classCode && a.armName.toLowerCase() === armName.toLowerCase() && a.session === session)) {
+                errorMessage.textContent = 'This class arm already exists for the selected class and session';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const armCode = generateArmCode(arms);
+            const newArm = {
+                armCode,
+                classCode,
+                armName,
+                session,
+                teacher: teacher || '',
+                createdAt: new Date().toISOString().split('T')[0]
+            };
+
+            arms.push(newArm);
+            localStorage.setItem('classArms', JSON.stringify(arms));
+            alert(`Class arm added successfully! Arm Code: ${armCode}`);
+            document.querySelector('form').reset();
+            errorMessage.classList.add('hidden');
+            displayClassArms();
+        });
+
+        // Display class arms
+        const displayClassArms = () => {
+            const arms = JSON.parse(localStorage.getItem('classArms')) || [];
+            const classes = JSON.parse(localStorage.getItem('classes')) || [];
+            const tableBody = document.getElementById('arms-table-body');
+            tableBody.innerHTML = '';
+            arms.forEach(arm => {
+                const cls = classes.find(c => c.classCode === arm.classCode);
+                const className = cls ? cls.name : 'Unknown';
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td class="px-6 py-4">${arm.armCode}</td>
+                    <td class="px-6 py-4">${className}</td>
+                    <td class="px-6 py-4">${arm.armName}</td>
+                    <td class="px-6 py-4">${arm.session}</td>
+                    <td class="px-6 py-4">${arm.teacher || 'N/A'}</td>
+                    <td class="px-6 py-4">${arm.createdAt}</td>
+                    <td class="px-6 py-4">
+                        <button class="edit-btn text-blue-500 hover:text-blue-700 mr-2" data-code="${arm.armCode}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-red-500 hover:text-red-700" data-code="${arm.armCode}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+            // Add event listeners for edit and delete buttons
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', () => openEditModal(btn.dataset.code));
+            });
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', () => deleteClassArm(btn.dataset.code));
+            });
+        };
+
+        // Open edit modal
+        const openEditModal = (armCode) => {
+            const arms = JSON.parse(localStorage.getItem('classArms')) || [];
+            const arm = arms.find(a => a.armCode === armCode);
+            if (arm) {
+                document.getElementById('edit-arm-code').value = arm.armCode;
+                document.getElementById('edit-class-id').value = arm.classCode;
+                document.getElementById('edit-arm-name').value = arm.armName;
+                document.getElementById('edit-session').value = arm.session;
+                document.getElementById('edit-teacher').value = arm.teacher;
+                document.getElementById('edit-modal').classList.remove('hidden');
+            }
+        };
+
+        // Save edited class arm
+        document.getElementById('save-edit').addEventListener('click', () => {
+            const armCode = document.getElementById('edit-arm-code').value;
+            const classCode = document.getElementById('edit-class-id').value;
+            const armName = document.getElementById('edit-arm-name').value.trim();
+            const session = document.getElementById('edit-session').value;
+            const teacher = document.getElementById('edit-teacher').value.trim();
+            const errorMessage = document.getElementById('edit-error-message');
+
+            if (!classCode || !armName || !session) {
+                errorMessage.textContent = 'Please fill all required fields (Class, Arm Name, Session)';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const arms = JSON.parse(localStorage.getItem('classArms')) || [];
+            const existingArm = arms.find(a => a.classCode === classCode && a.armName.toLowerCase() === armName.toLowerCase() && a.session === session && a.armCode !== armCode);
+            if (existingArm) {
+                errorMessage.textContent = 'This class arm already exists for the selected class and session';
+                errorMessage.classList.remove('hidden');
+                return;
+            }
+
+            const updatedArms = arms.map(a => {
+                if (a.armCode === armCode) {
+                    return { ...a, classCode, armName, session, teacher, createdAt: a.createdAt };
+                }
+                return a;
+            });
+
+            localStorage.setItem('classArms', JSON.stringify(updatedArms));
+            document.getElementById('edit-modal').classList.add('hidden');
+            alert('Class arm updated successfully!');
+            displayClassArms();
+        });
+
+        // Cancel edit
+        document.getElementById('cancel-edit').addEventListener('click', () => {
+            document.getElementById('edit-modal').classList.add('hidden');
+            document.getElementById('edit-error-message').classList.add('hidden');
+        });
+
+        // Delete class arm
+        const deleteClassArm = (armCode) => {
+            if (confirm('Are you sure you want to delete this class arm?')) {
+                let arms = JSON.parse(localStorage.getItem('classArms')) || [];
+                arms = arms.filter(a => a.armCode !== armCode);
+                localStorage.setItem('classArms', JSON.stringify(arms));
+                alert('Class arm deleted successfully!');
+                displayClassArms();
+            }
+        };
+
+        // Clear error messages on input
+        ['class-id', 'arm-name', 'session', 'teacher', 'edit-class-id', 'edit-arm-name', 'edit-session', 'edit-teacher'].forEach(id => {
+            document.getElementById(id).addEventListener('input', () => {
+                document.getElementById('error-message').classList.add('hidden');
+                document.getElementById('edit-error-message').classList.add('hidden');
+            });
+        });
+
+        // Initialize
+        initializeData();
+    </script>
+</body>
+</html>
