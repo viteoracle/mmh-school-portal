@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>View Staff - School Portal</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background-color: #f3f4f6;
+    }
+    .form-card, .table-card {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body class="p-6">
+  <h1 class="text-2xl font-bold mb-6">View Staff</h1>
+
+  <!-- Staff Form 
+  <div class="form-card bg-white p-6 rounded-lg shadow-lg max-w-3xl mx-auto mb-6">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Staff Information</h2>
+    <div id="error-message" class="hidden text-red-500 text-sm mb-4"></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label for="fullname" class="block text-sm font-medium text-gray-700">Full Name</label>
+        <input type="text" id="fullname" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Gender</label>
+        <select id="gender" class="w-full p-2 border rounded" required>
+          <option value="" disabled selected>Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Others</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Degree</label>
+        <select id="degree" class="w-full p-2 border rounded" required>
+          <option value="" disabled selected>Select Degree</option>
+          <option>O'Level</option>
+          <option>OND</option>
+          <option>NCE</option>
+          <option>HND</option>
+          <option>BSc Education</option>
+          <option>BSc</option>
+          <option>Masters</option>
+          <option>PhD</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Marital Status</label>
+        <select id="marital" class="w-full p-2 border rounded" required>
+          <option value="" disabled selected>Select Marital Status</option>
+          <option>Married</option>
+          <option>Single</option>
+          <option>Others</option>
+        </select>
+      </div>
+      <div class="md:col-span-2">
+        <label class="block text-sm font-medium text-gray-700">Appointment Year</label>
+        <select id="year" class="w-full p-2 border rounded" required>
+          <option value="" disabled selected>Select Year</option>
+          <option>2023</option>
+          <option>2024</option>
+          <option>2025</option>
+        </select>
+      </div>
+      <div class="md:col-span-2">
+        <button id="add-staff" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300">
+          <i class="fas fa-plus mr-2"></i> Add Staff
+        </button>
+      </div>
+    </div>
+  </div>-->
+
+  <!-- Staff Table -->
+  <div class="table-card bg-white p-6 rounded-lg shadow-lg max-w-5xl mx-auto">
+    <h2 class="text-lg font-semibold text-gray-700 mb-4">Staff List</h2>
+    <table class="w-full border-collapse border border-gray-300">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="border p-2">Full Name</th>
+          <th class="border p-2">Gender</th>
+          <th class="border p-2">Degree</th>
+          <th class="border p-2">Marital Status</th>
+          <th class="border p-2">Appointment Year</th>
+        </tr>
+      </thead>
+      <tbody id="staff-table-body"></tbody>
+    </table>
+  </div>
+
+  <script>
+    // Load staff data from localStorage
+    const loadStaff = () => {
+      const staffList = JSON.parse(localStorage.getItem("staffList")) || [];
+      const tbody = document.getElementById("staff-table-body");
+      tbody.innerHTML = "";
+      staffList.forEach(staff => {
+        const row = `<tr class="border-b hover:bg-gray-50">
+            <td class="border p-2">${staff.fullname}</td>
+            <td class="border p-2">${staff.gender}</td>
+            <td class="border p-2">${staff.degree}</td>
+            <td class="border p-2">${staff.marital}</td>
+            <td class="border p-2">${staff.year}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+      });
+    };
+
+    // Add staff to localStorage
+    document.getElementById("add-staff").addEventListener("click", () => {
+      const fullname = document.getElementById("fullname").value.trim();
+      const gender = document.getElementById("gender").value;
+      const degree = document.getElementById("degree").value;
+      const marital = document.getElementById("marital").value;
+      const year = document.getElementById("year").value;
+      const error = document.getElementById("error-message");
+
+      if (!fullname || !gender || !degree || !marital || !year) {
+        error.textContent = "All fields are required!";
+        error.classList.remove("hidden");
+        return;
+      }
+      error.classList.add("hidden");
+
+      const staff = { fullname, gender, degree, marital, year };
+      const staffList = JSON.parse(localStorage.getItem("staffList")) || [];
+      staffList.push(staff);
+      localStorage.setItem("staffList", JSON.stringify(staffList));
+
+      // Reset form
+      document.getElementById("fullname").value = "";
+      document.getElementById("gender").value = "";
+      document.getElementById("degree").value = "";
+      document.getElementById("marital").value = "";
+      document.getElementById("year").value = "";
+
+      loadStaff();
+    });
+
+    // Initial load
+    loadStaff();
+  </script>
+</body>
+</html>
