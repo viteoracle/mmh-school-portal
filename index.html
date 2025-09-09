@@ -1,107 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>School Portal Login</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body {
-            background: linear-gradient(to bottom right, #2c3e50, #3498db);
-        }
-        .login-card {
-            animation: fadeIn 0.5s ease-in-out;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @media (max-width: 640px) {
-            .login-card {
-                width: 90%;
-            }
-            input, button {
-                font-size: 1rem;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>School Portal Login</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="flex items-center justify-center min-h-screen">
-    <div class="login-card bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <div class="flex items-center justify-center mb-6">
-            <i class="fas fa-school text-3xl text-blue-500 mr-2"></i>
-            <h2 class="text-2xl font-bold text-gray-800">Vitco-record School Portal</h2>
-        </div>
-        <h3 class="text-xl font-semibold text-gray-700 mb-6 text-center">Login</h3>
-        <div id="error-message" class="hidden text-red-500 text-sm mb-4 text-center"></div>
-        <div class="space-y-4">
-            <div>
-                <label class="block text-gray-700 font-medium mb-1" for="username">Username</label>
-                <div class="relative">
-                    <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input
-                        type="text"
-                        id="username"
-                        class="w-full pl-10 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter username"
-                        required
-                    >
-                </div>
-            </div>
-            <div>
-                <label class="block text-gray-700 font-medium mb-1" for="password">Password</label>
-                <div class="relative">
-                    <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                    <input
-                        type="password"
-                        id="password"
-                        class="w-full pl-10 p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="Enter password"
-                        required
-                    >
-                </div>
-            </div>
-            <button
-                id="login-btn"
-                class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-300 flex items-center justify-center"
-            >
-                <i class="fas fa-sign-in-alt mr-2"></i> Login
-            </button>
-            <p>I don't have an account 
-                <a href="signin.html" style="color: red; font-weight: bold;">Sign in</a>
-              </p>
-              
-        </div>
-    </div>
+<body class="bg-gray-100 h-screen flex items-center justify-center">
+  
+  <div class="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+    <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">School Portal Login</h2>
+    
+    <form id="loginForm" class="space-y-4">
+      <!-- Email -->
+      <div>
+        <label class="block text-gray-700 mb-1" for="email">Email</label>
+        <input id="email" type="email" required
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Enter your email">
+      </div>
 
-    <script>
-        const loginBtn = document.getElementById('login-btn');
-        const errorMessage = document.getElementById('error-message');
+      <!-- Password -->
+      <div>
+        <label class="block text-gray-700 mb-1" for="password">Password</label>
+        <input id="password" type="password" required
+          class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+          placeholder="Enter your password">
+      </div>
 
-        loginBtn.addEventListener('click', () => {
-            const username = document.getElementById('username').value.trim();
-            const password = document.getElementById('password').value.trim();
+      <!-- Login button -->
+      <button type="submit" 
+        class="w-full bg-blue-600 text-white py-2 rounded-lg font-semibold hover:bg-blue-700 transition">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+    </form>
 
-            // Hardcoded credentials for demo
-            const validUsername = 'admin';
-            const validPassword = 'password123';
+    <p class="text-center mt-4 text-sm text-gray-600">
+      Don’t have an account? <a href="register.html" class="text-blue-600 font-semibold">Register</a>
+    </p>
+  </div>
 
-            if (username === validUsername && password === validPassword) {
-                window.location.href = 'index2.html';
-            } else {
-                errorMessage.textContent = 'Invalid username or password';
-                errorMessage.classList.remove('hidden');
-            }
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+
+      try {
+        const response = await fetch("https://school-reg.onrender.com/api/auth/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ email, password })
         });
 
-        // Clear error message on input
-        document.getElementById('username').addEventListener('input', () => {
-            errorMessage.classList.add('hidden');
-        });
-        document.getElementById('password').addEventListener('input', () => {
-            errorMessage.classList.add('hidden');
-        });
-    </script>
+        const data = await response.json();
+        console.log("Full response:", data);
+
+        if (response.ok && data.user && data.token) {
+          // Save token + user to localStorage
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("user", JSON.stringify(data.user));
+
+          alert("Login successful!");
+          window.location.href = "dashboard.html"; // redirect
+        } else {
+          alert(data.message || "Invalid credentials. Try again.");
+        }
+      } catch (error) {
+        console.error("Login error:", error);
+        alert("Something went wrong. Please try again.");
+      }
+    });
+  </script>
+
 </body>
 </html>
